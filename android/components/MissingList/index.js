@@ -6,7 +6,8 @@ import MissingCard from '../MissingCard';
 export default class MissingList extends PureComponent { 
     state = {
         missingList: [],
-        loading: true
+        loading: true,
+        buttonClicked: false
     }
     
     async componentDidMount() {
@@ -14,7 +15,7 @@ export default class MissingList extends PureComponent {
             city = "Hollywood"
             state = "CA"
             country = "US"
-            let APICall = fetch("https://api.missingkids.org/missingkids/servlet/JSONDataServlet?action=publicSearch&searchLang=en_US&search=new&subjToSearch=child&missCity=" + city + "&missState=" + state + "&missCountry=" + country)
+            fetch("https://api.missingkids.org/missingkids/servlet/JSONDataServlet?action=publicSearch&searchLang=en_US&search=new&subjToSearch=child&missCity=" + city + "&missState=" + state + "&missCountry=" + country)
                 .then(function(response) {return response.json();})
                 .then(function(myJson){
                     this.setState({missingList: myJson.persons, loading: false});
@@ -24,9 +25,16 @@ export default class MissingList extends PureComponent {
         }
     }
 
+    moreDetail() {
+        if(this.state.buttonClicked) {
+            console.log();
+        }
+    }
+
     renderItem(data) {
         return <MissingCard {...data.item}/>
     }
+
     render() {
         const { missingList, loading } = this.state;
         if(!loading) {
