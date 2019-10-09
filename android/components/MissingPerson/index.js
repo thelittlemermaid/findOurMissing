@@ -1,11 +1,16 @@
-import React from 'react';
-import { TouchableOpacity, Text, View, Image, Modal } from 'react-native';
+import React, { PureComponent } from 'react'; 
+import { View, Text, Image } from 'react-native';
 import styles from './styles';
 
-const MissingPerson = ({height}) => {
-    return (
-        <Text>{height}</Text>
-    )
-}
 
-export default MissingPerson;
+export default class MissingPerson extends PureComponent {
+    c
+    render() {
+        const { navigation } = this.props;
+        return (
+            <View>
+                <Text style={styles.personName}>{navigation.getParam('name', 'Name of Missing Person')}</Text>
+            </View>
+        );
+    }
+)
