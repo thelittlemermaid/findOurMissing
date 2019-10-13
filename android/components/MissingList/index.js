@@ -7,7 +7,10 @@ export default class MissingList extends PureComponent {
     state = {
         missingList: [],
         loading: true,
-        buttonClicked: false
+    }
+
+    static navigationOptions = {
+        title: 'List of Missing in Your Area'
     }
     
     async componentDidMount() {
@@ -25,22 +28,13 @@ export default class MissingList extends PureComponent {
         }
     }
 
-    moreDetail() {
-        if(this.state.buttonClicked) {
-            console.log();
-        }
-    }
-
-    renderItem(data) {
-        return <MissingCard {...data.item}/>
-    }
-
     render() {
         const { missingList, loading } = this.state;
+        const { navigation } = this.props;
         if(!loading) {
             return <FlatList 
                     data={missingList}
-                    renderItem={this.renderItem}
+                    renderItem={(data) => <MissingCard {...data.item} navigation={navigation} />}
                     keyExtractor={(item, index) => index.toString()} 
                     />
         } else {
