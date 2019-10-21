@@ -9,7 +9,7 @@ const MissingCard = ({firstName, middleName, lastName, thumbnailUrl, missingCoun
     let newUrl = 'https://api.missingkids.org' + shortenedUrl + '.jpg';
 
     return (
-        <TouchableOpacity style={{backgroundColor: 'transparent'}} onPress={() => navigation.navigate('MissingPerson', {firstName, middleName, lastName, missingCounty, missingCity, missingCountry, missingDate, caseNumber, orgPrefix, newUrl})}>
+        <TouchableOpacity style={{backgroundColor: 'transparent'}} onPress={() => navigation.navigate('MissingPerson', {firstName, middleName, lastName, missingCounty, missingCity, missingCountry, missingDate, caseNumber, orgPrefix, thumbnailUrl, newUrl})}>
             <View  style={styles.listItemContainer}>
                 <Image source={{uri: newUrl}} style={styles.missingImage}/>
                 <Text style={styles.personName}>{firstName} {middleName} {lastName}</Text>
