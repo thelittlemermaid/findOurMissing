@@ -9,9 +9,13 @@
 
 To run this project, create a new directory on your local machine and git clone this repository in the newly created folder.
 Open Android Studio and open the `android` folder in this project in the Studio environment. This will automatically trigger the Gradle build.
-Allow the build to complete then begin your Andriod Virtual Device.
 
-In your terminal, run the following commands:
+Allow the build to complete then begin your Android Virtual Device.
+If the build does not complete, download the debug.keystore default file here: https://raw.githubusercontent.com/facebook/react-native/master/template/android/app/debug.keystore and move it to the `android/app` folder.
+
+Ensure you are in the root directory of your cloned project then in your terminal, run the following commands:
+
+`npm install` This will install all of the packages and dependencies required for the project. _This may take a few minutes._
 
 `cd android && ./gradlew clean` _This must complete successfully._
 
