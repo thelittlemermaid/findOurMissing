@@ -6,7 +6,11 @@ import MissingCard from '../MissingCard';
 export default class MissingList extends PureComponent { 
     state = {
         missingList: [],
-        loading: true
+        loading: true,
+    }
+
+    static navigationOptions = {
+        title: 'List of Missing in Your Area'
     }
     
     async componentDidMount() {
@@ -14,7 +18,7 @@ export default class MissingList extends PureComponent {
             city = "Hollywood"
             state = "CA"
             country = "US"
-            let APICall = fetch("https://api.missingkids.org/missingkids/servlet/JSONDataServlet?action=publicSearch&searchLang=en_US&search=new&subjToSearch=child&missCity=" + city + "&missState=" + state + "&missCountry=" + country)
+            fetch("https://api.missingkids.org/missingkids/servlet/JSONDataServlet?action=publicSearch&searchLang=en_US&search=new&subjToSearch=child&missCity=" + city + "&missState=" + state + "&missCountry=" + country)
                 .then(function(response) {return response.json();})
                 .then(function(myJson){
                     this.setState({missingList: myJson.persons, loading: false});
@@ -24,15 +28,13 @@ export default class MissingList extends PureComponent {
         }
     }
 
-    renderItem(data) {
-        return <MissingCard {...data.item}/>
-    }
     render() {
         const { missingList, loading } = this.state;
+        const { navigation } = this.props;
         if(!loading) {
             return <FlatList 
                     data={missingList}
-                    renderItem={this.renderItem}
+                    renderItem={(data) => <MissingCard {...data.item} navigation={navigation} />}
                     keyExtractor={(item, index) => index.toString()} 
                     />
         } else {

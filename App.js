@@ -6,12 +6,32 @@
  * @flow
  */
 
-import React, {Fragment} from 'react';
+import React, {PureComponent, Fragment} from 'react';
 import { SafeAreaView, StyleSheet, ScrollView, View, Text, StatusBar, FlatList} from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { createStackNavigator } from 'react-navigation-stack';
 import MissingList from './android/components/MissingList';
 import MissingPerson from './android/components/MissingPerson';
+import Home from './android/components/Home';
+import { createAppContainer } from 'react-navigation';
 
+
+const RootStack = createStackNavigator({
+  Home: { screen: Home },
+  MissingList: { screen: MissingList },
+  MissingPerson: {screen: MissingPerson }
+},
+{
+  initialRouteName:  'MissingList',
+})
+
+/*
+const App = () => {
+return <RootStack />
+}
+*/
+export default createAppContainer(RootStack);
+/*
 const App = () => {
   return (
     <Fragment>
@@ -69,3 +89,4 @@ const styles = StyleSheet.create({
 });
 
 export default App;
+*/
