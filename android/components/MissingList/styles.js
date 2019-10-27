@@ -12,6 +12,12 @@ const styles = StyleSheet.create({
     personName : {
         fontSize: 24,
         color: '#000000',
+    },
+    linkText : {
+        fontSize: 20,
+        color: '#000',
+        textAlign: "center",
+        
     }
 })
 
