@@ -15,25 +15,13 @@ export default class MissingList extends PureComponent {
     
     async componentDidMount() {
         try {
-            city = "Marshall"
-            state = "TX"
+            city = "Hollywood"
+            state = "CA"
             country = "US"
             fetch("https://api.missingkids.org/missingkids/servlet/JSONDataServlet?action=publicSearch&searchLang=en_US&search=new&subjToSearch=child&missCity=" + city + "&missState=" + state + "&missCountry=" + country)
                 .then(function(response) {return response.json();})
                 .then(function(myJson){
-                    console.log("Old Fetch");
-                    console.log(myJson.persons);
-                    for (let nextPage = 1; nextPage <= myJson.totalPages; nextPage++) {
-                        fetch("https://api.missingkids.org/missingkids/servlet/JSONDataServlet?action=publicSearch&searchLang=en_US&goToPage=" + nextPage)
-                        .then(function(dataFromNextPage) {return dataFromNextPage.json();})
-                        .then(function(newJson) {
-                            console.log("New Fetch:");
-                            console.log(newJson.persons);
-                            var joinedArray = this.state.missingList.concat(newJson.persons);
-                            this.setState({missingList: joinedArray});
-                        }.bind(this))
-                    }
-                    this.setState({loading: false});
+                    this.setState({missingList: myJson.persons, loading: false});
             }.bind(this));
         } catch(err) {
             console.log("Error fetching data-----------", err);
