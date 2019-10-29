@@ -1,5 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { FlatList, Button, Text, ActivityIndicator, Linking } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 import styles from './styles';
 import MissingCard from '../MissingCard';
 
@@ -7,6 +8,8 @@ export default class MissingList extends PureComponent {
     state = {
         missingList: [],
         loading: true,
+        latitude: 0,
+        longitude: 0
     }
 
     static navigationOptions = {
@@ -15,6 +18,11 @@ export default class MissingList extends PureComponent {
     
     async componentDidMount() {
         try {
+            Geolocation.getCurrentPosition(info => {
+                this.setState({latitude: info.coords.latitude, longitude: info.coords.longitude});
+                console.log(this.state.latitude);
+                console.log(this.state.longitude);
+            });
             city = "Hollywood"
             state = "CA"
             country = "US"
