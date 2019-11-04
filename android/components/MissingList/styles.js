@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
         color: '#000',
         textAlign: "center",
         
+    },
+    countText: {
+        textAlign: "center"
     }
 })
 
