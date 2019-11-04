@@ -8,8 +8,10 @@ export default class MissingList extends PureComponent {
     state = {
         missingList: [],
         loading: true,
-        latitude: 0,
-        longitude: 0
+        recordCount: 0,
+        city: "",
+        state: "",
+        country: ""
     }
 
     static navigationOptions = {
@@ -19,18 +21,23 @@ export default class MissingList extends PureComponent {
     async componentDidMount() {
         try {
             Geolocation.getCurrentPosition(info => {
-                this.setState({latitude: info.coords.latitude, longitude: info.coords.longitude});
-                console.log(this.state.latitude);
-                console.log(this.state.longitude);
-            });
-            city = "Hollywood"
-            state = "CA"
-            country = "US"
-            fetch("https://api.missingkids.org/missingkids/servlet/JSONDataServlet?action=publicSearch&searchLang=en_US&search=new&subjToSearch=child&missCity=" + city + "&missState=" + state + "&missCountry=" + country)
-                .then(function(response) {return response.json();})
-                .then(function(myJson){
-                    this.setState({missingList: myJson.persons, loading: false});
-            }.bind(this));
+                let latitude = info.coords.latitude;
+                let longitude = info.coords.longitude
+                fetch("https://api.opencagedata.com/geocode/v1/json?q=" + latitude + "+" + longitude + "&key=71f40d4c38fe47f6bf568dd1d0ce8929")
+                    .then(function(location) {return location.json();})
+                    .then(function(locationJson) {
+                        fetch("https://api.missingkids.org/missingkids/servlet/JSONDataServlet?action=publicSearch&searchLang=en_US&search=new&subjToSearch=child&missCity=" + locationJson.results[0].components.city + "&missState=" + locationJson.results[0].components.state_code + "&missCountry=" + locationJson.results[0].components.country_code.toUpperCase())
+                            .then(function(response) {return response.json();})
+                            .then(function(myJson){
+                                if(myJson.totalPages > 1) {
+                                    this.setState({recordCount: 10});
+                                } else {
+                                    this.setState({recordCount: myJson.totalRecords});
+                                }
+                                this.setState({missingList: myJson.persons, loading: false});
+                        }.bind(this));
+                    }.bind(this));
+            });          
         } catch(err) {
             console.log("Error fetching data-----------", err);
         }
@@ -47,6 +54,7 @@ export default class MissingList extends PureComponent {
                     renderItem={(data) => <MissingCard {...data.item} navigation={navigation} />}
                     keyExtractor={(item, index) => index.toString()} 
                     />
+                    <Text style={styles.countText}>Showing the first {this.state.recordCount} case(s)</Text>
                     <Text style={styles.linkText}>To find more missing person cases from all over the world tap here:</Text>
                     <Button title="National Center for Missing & Exploited Children" onPress={ ()=>{ Linking.openURL('http://api.missingkids.org/home')}}></Button>
                 </Fragment>
